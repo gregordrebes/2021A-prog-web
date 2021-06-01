@@ -16,9 +16,10 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->longtext("description");
-            $table->string("theme_color");
-            $table->string("icon_path");
+            $table->longtext("description")->nullable();
+            $table->string("color")->nullable();
+            $table->string("icon")->nullable();
+            $table->char('deleted', 1)->default('f');
             $table->timestamps();
         });
     }
