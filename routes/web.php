@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
     // Rotas que só o moderador pode acessar
     Route::middleware('role')->group(function () {
+        // categories
         Route::get("/categories", "CategoryController@index")->name("categories");
         Route::get("/categories/add", "CategoryController@form")->name("categories.add");
         Route::get("/categories/edit/{id}", "CategoryController@form")->name("categories.edit");

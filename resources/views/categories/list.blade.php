@@ -7,10 +7,12 @@
     <table class="table table-hover">
         <thead>
             <tr>
-              <th scope="col">Id</th>
-              <th scope="col">Name</th>
-              <th scope="col">Description</th>
-              <th scope="col" colspan="2">Options</th>
+              <th scope="col" style="text-align: center;">Id</th>
+              <th scope="col" style="text-align: center;">Name</th>
+              <th scope="col" style="text-align: center;">Description</th>
+              <th scope="col" style="text-align: center;">Icon</th>
+              <th scope="col" style="text-align: center;">Color</th>
+              <th scope="col" style="width: 15rem;text-align: center;">Options</th>
             </tr>
           </thead>
           <tbody>
@@ -18,12 +20,23 @@
                 <tr>
                     <td>{{ $c->id }}</td>
                     <td>{{ $c->name }}</td>
-                    <td>{{ $c->description }}</td>
-                    <td>
-                        <a class="col btn btn-primary" href="{{ url("/categories/edit/".$c->id) }}" role="button">Edit</a>
+                    <td>{{ substr($desc = $c->description, 0, $maxLength = 50) . (strlen($desc) > $maxLength ? "..." : "") }}</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                      @if (!empty($c->icon))
+                        <span class="material-icons" style="font-size: 18px;">{{ $c->icon }}</span>
+                      @endif
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                      <span class="material-icons" style="font-size: 18px; color: {{ $c->color }};">circle</span>
                     </td>
                     <td>
-                        <a class="col btn btn-danger" href="{{ url("/categories/delete/".$c->id) }}" role="button">Delete</a>
+                      <div class="btn-toolbar text-center" style="width:100%">
+                        <a class="col btn btn-block btn-primary" href="{{ url("/categories/edit/".$c->id) }}" role="button">Edit</a>
+                        <form class="col" action="{{ url("/categories/delete/".$c->id) }}" onsubmit="return confirm('Are you sure?');">
+                          @csrf
+                          <input type="submit" class="btn btn-block btn-danger" role="button" value="Delete"/>
+                        </form>
+                      </div>
                     </td>
                 </tr>
             @empty
