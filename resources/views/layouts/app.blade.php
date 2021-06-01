@@ -17,31 +17,21 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="shortcut icon" href="/storage/img/bologuer.png"/>
 
-    <style>
-            
-        .posts{
-            transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
-        }
-
-        .posts:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
-        }
-
-    </style>
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/material-icons-min.css') }}" />
 
-    @stack('head')
+    @stack('styles')
+    @stack('scripts')
+
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <img src="/storage/img/bologuer.png" alt="Bologuer Logo" style="width:3.8rem; margin-right: 1rem;">
-                <a class="navbar-brand" href="{{ route('home') }}" style="font-size: 2rem;">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{ url('/') }}" style="font-size: 2rem;">
+                    <img src="/storage/img/bologuer.png" alt="Bologuer Logo" style="width:3.8rem; margin-right: 1rem;">
+                    {{ config('app.name', 'Bologuer') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -50,7 +40,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @stack('search-bar')
                     </ul>
 
                     <!-- Right Side Of Navbar -->
