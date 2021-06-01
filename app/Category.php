@@ -17,7 +17,7 @@ class Category extends Model
         'name',
         'description',
         'color',
-        'icon_path'
+        'icon'
     ];
     
     public function post()
