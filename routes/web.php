@@ -38,9 +38,13 @@ Route::middleware('auth')->group(function () {
         Route::get("/categories/edit/{id}", "CategoryController@form")->name("categories.edit");
         Route::post("/categories/save/{id?}", "CategoryController@save")->name("categories.save");
         Route::get("/categories/delete/{id}", "CategoryController@delete")->name("categories.delete");
+        
+        // users
+        Route::post("/users/deactivate/{id}", "UserController@deactivate")->name("users.deactivate");
     });
     
     // Rotas para todos autenticados
+    // users
     Route::get("/users", "UserController@index")->name("users");
     Route::get("/users/edit", "UserController@form")->name("users.edit");
     Route::post("/users/save", "UserController@save")->name("users.save");

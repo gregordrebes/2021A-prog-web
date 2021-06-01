@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
-@push('head')
-    <!-- Styles -->
-    {{-- <link href="{{ asset('css/pizza.css') }}" rel="stylesheet"> --}}
-    <!-- Scripts -->
+@push('scripts')
     <script src="{{ asset('js/users.js') }}"></script>
 @endpush
 
@@ -78,11 +75,11 @@
         </form>
     </div>
     <div class="col m-auto d-flex flex-row justify-content-center" style="max-width: 720px;">
-        <form class="form-horizontal col" method="post" action="{{ route("users.delete") }}">
+        <form class="form-horizontal col" method="post" action="{{ url("/users/deactivate/".Auth::user()->id) }}">
             @csrf
             <div class="form-group">
                 <div class="col-md-4">
-                    <button class="col btn btn-danger" type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete this account</button>
+                    <button class="col btn btn-danger" type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger">Deactivate this account</button>
                 </div>
               </div>
         </form>

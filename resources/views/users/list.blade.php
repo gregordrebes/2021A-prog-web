@@ -3,16 +3,6 @@
 @section('content')
 <div class="col-8 m-auto">
     <h1>Users</h1>
-    {{--
-    <div class="row">
-        <div class="col-sm-10 col-12">
-            <h1>Users</h1>
-        </div>
-        <div class="col-sm-2 col-12">
-            <input class="btn btn-primary" type="button" value="Input">
-        </div>
-     </div> 
-    --}}
     <table class="table table-hover">
         <thead>
             <tr>
@@ -20,7 +10,9 @@
               <th scope="col">Name</th>
               <th scope="col">Email</th>
               <th scope="col">Role</th>
-              {{-- <th scope="col">Options</th> --}}
+              @moderator
+              <th scope="col">Options</th>
+              @endmoderator
             </tr>
           </thead>
           <tbody>
@@ -38,21 +30,20 @@
                     </td>
                     <td>{{ $u->email }}</td>
                     <td>{{ App\Helpers\RoleHelper::getRoleName($u->role_id) }}</td>
+                    @moderator
+                    <td>
+                      @if ($u->id == Auth::user()->id)
+                      <button type="button" class="col btn btn-danger" disabled title="You can {{ ($u->active == 't') ? 'deactivate' : 'activate' }} your user in 'Edit user'">{{ ($u->active == 't') ? "Deactivate" : "Activate" }}</button>
+                      @else
+                      <form action="{{ url("/users/deactivate/".$u->id) }}" onsubmit="return confirm('Do you really want to {{ ($u->active == 't') ? 'deactivate' : 'activate' }} the user {{ $u->name}}?');">
+                        @csrf
+                        <input type="submit" class="col btn btn-{{ ($u->active == 't') ? "danger" : "success" }}" role="button" value="{{ ($u->active == 't') ? "Deactivate" : "Activate" }}"/>
+                      </form>
+                      @endif
+                    </td>
+                    @endmoderator
                 </tr>
             @endforeach
-            {{-- 
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr> 
-            --}}
           </tbody>
     </table>
 </div>

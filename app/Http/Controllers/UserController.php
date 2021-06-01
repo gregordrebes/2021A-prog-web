@@ -56,26 +56,43 @@ class UserController extends Controller
         return redirect()->route("users.edit")->with('message', 'Chages saved successfully!');
     }
 
-    public function delete(Request $request)
+    public function deactivate(Request $request)
     {
-        // Get the user
-        $user = Auth::user();
+        if ($id = $request->id){
+            $deactivated = User::findOrFail($id)->active('f')->save();
 
-        // Log the user out
-        Auth::logout();
+            if ($deactivated) {
+                // User was deactivated successfully, redirect to login
+                return redirect()->route("users")->with("message", "User deactivated!");
+            } else {
+                return back()->with('error', 'Failed to deactivate the user!');
+            }
+        } else if (Auth::user()){
+            // Get the user
+            $user = Auth::user();
 
-        // Delete the user (note that softDeleteUser() should return a boolean for below)
-        $deleted = User::destroy($user->id);
+            // Log the user out
+            Auth::logout();
 
-        if ($deleted) {
-            // User was deleted successfully, redirect to login
-            return redirect()->route("/")->with("message", "User deleted!");
+            // deactivate the user 
+            $deactivated = $user->active('f')->save();
+
+            if ($deactivated) {
+                // User was deactivated successfully, redirect to login
+                return redirect()->route("/")->with("message", "User deactivated!");
+            } else {
+                // User was NOT deactivated successfully, so log them back into your application! Could also use: Auth::loginUsingId($user->id);
+                $user->active('t')->save();
+                
+                Auth::login($user);
+
+                // Redirect them back with some data letting them know it failed (or handle however you need depending on your setup)
+                return back()->with('error', 'Failed to deactivate your user!');
+            }
         } else {
-            // User was NOT deleted successfully, so log them back into your application! Could also use: Auth::loginUsingId($user->id);
-            Auth::login($user);
-
-            // Redirect them back with some data letting them know it failed (or handle however you need depending on your setup)
-            return back()->with('error', 'Failed to delete your user!');
+            return back()->with('error', 'No user selected!');
         }
+        
+        
     }
 }
