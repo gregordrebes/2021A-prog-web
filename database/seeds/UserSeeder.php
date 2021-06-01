@@ -23,5 +23,14 @@ class UserSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now
         ]);
+        DB::table("users")->insert([
+            "name" => "Editor Test",
+            "email" => "editor.test@mail.com",
+            "password" => Hash::make("12345678"),
+            "role_id" => "2",
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
+
     }
 }
