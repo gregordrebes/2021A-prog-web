@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Helpers\RoleHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use stdClass;
 
 class CategoryController extends Controller
@@ -17,11 +19,9 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
 
-        // $c = new stdClass();
-        // $c->id = 1;
-        // $c->name = "Programming";
-        // $c->description = "About programming tricks, technologies and etc.";
-        // $categories = [$c];
+        $is_moderator = Auth::user()->role_id == RoleHelper::MODERATOR;
+        
+        $categories = $is_moderator ? Category::all() : Category::where('deleted', '=', 'f')->get(); 
 
         return view("categories.list", compact("categories"));
     }
@@ -35,58 +35,21 @@ class CategoryController extends Controller
     public function save(Request $request)
     {
         // https://blog.especializati.com.br/upload-de-arquivos-no-laravel-com-request/
-        dd($request->all());
-        // Define o valor default para a variável que contém o nome da imagem 
-        $nameFile = null;
-        $icon_path = null;
+        $category_id = $request->id;
+
+        $data = [
+             "name" => ["required", "max:255"],
+        ];
         
-        // Verifica se informou o arquivo e se é válido
-        if ($request->hasFile('icon_path') && $request->file('icon_path')->isValid()) {
-            
-            // Define um aleatório para o arquivo baseado no timestamps atual
-            $name = uniqid(date('HisYmd'));
-            
-            // Recupera a extensão do arquivo
-            $extension = $request->icon_path->extension();
-            
-            // Define finalmente o nome
-            $nameFile = "{$name}.{$extension}";
-            
-            // Path
-            $path =  'public/img/categories/';
-
-            // Faz o upload:
-            $upload = $request->icon_path->storeAs($path, $nameFile);
-            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
-            
-            $icon_path = $path . $nameFile;
-
-            // Verifica se NÃO deu certo o upload (Redireciona de volta)
-            if (!$upload) {
-                return redirect()
-                ->back()
-                ->with('error', 'Failed to upload file!')
-                ->withInput();
-            }
+        $request->validate($data);
+        
+        if (!empty($category_id)){
+            Category::find($category_id)->update($request->all());
+        } else {
+            Category::create($request->all());
         }
 
-        // $data = [
-        //     "name" => ["required", "max:255"],
-        //     "email" => ["required", Rule::unique('users')->ignore($user_id), "max:255"],
-        // ];
-        
-        // if (!is_null($icon_path)){
-        //     $data["icon_path"] = ["required", "min:8", "confirmed"];
-        // }
-        
-        // $validatedData = $request->validate($data);
-
-        // Category::find($user_id)->update($validatedData);
-
-
-        return redirect()->back()->with('message', 'Chages saved successfully!');
-
-        /// TODO CONTINUA INSERT/UPDATE
+        return redirect()->route("categories")->with('message', 'Chages saved successfully!');
     }
     
     /**
@@ -97,7 +60,6 @@ class CategoryController extends Controller
     public function form($id = null)
     {
         $category = Category::find($id);
-        // dd($category);
         return view("categories.form", compact("category"));
     }
 
@@ -109,8 +71,10 @@ class CategoryController extends Controller
      */
     public function delete($id = null)
     {
-        //
-        dd("delete");
+        $category = Category::find($id);
+        $category->deleted = 't';
+        $category->save();
+        return redirect()->route("categories")->with('message', 'Category deleted successfully!');
     }
 
     // /**
