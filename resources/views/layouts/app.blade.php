@@ -67,6 +67,9 @@
                             @endif
                         @else
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('posts') }}">{{ __('Posts') }}</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('users') }}">{{ __('Users') }}</a>
                             </li>
                             @moderator

@@ -20,5 +20,8 @@ class Category extends Model
         'icon_path'
     ];
     
-    // TODO - no Post Model, adicionar o belongsTo category_id
+    public function post()
+    {
+        return $this->hasMany("App\Post");
+    }
 }

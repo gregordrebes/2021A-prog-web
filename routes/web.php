@@ -29,6 +29,10 @@ Route::get('/home', "HomeController@index")->name('home');
 // Route::get('/home', [HomeController::class, "index"]);
 
 
+// view post
+Route::get("/posts/view/{slug}", "PostController@view")->name("posts.view");
+
+// Rotas com autenticação
 Route::middleware('auth')->group(function () {
 
     // Rotas que só o moderador pode acessar
@@ -48,5 +52,12 @@ Route::middleware('auth')->group(function () {
     Route::get("/users", "UserController@index")->name("users");
     Route::get("/users/edit", "UserController@form")->name("users.edit");
     Route::post("/users/save", "UserController@save")->name("users.save");
-    Route::post("/users/delete", "UserController@delete")->name("users.delete");
+
+    // posts
+    Route::get("/posts", "PostController@index")->name("posts");
+    Route::get("/posts/add", "PostController@form")->name("posts.add");
+    Route::get("/posts/edit/{id}", "PostController@form")->name("posts.edit");
+    Route::post("/posts/save/{id?}", "PostController@save")->name("posts.save");
+    Route::get("/posts/delete/{id}", "PostController@delete")->name("posts.delete");
+    Route::get("/posts/restore/{id}", "PostController@restore")->name("posts.restore");
 });
