@@ -30,7 +30,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="font-size: 2rem;">
-                    <img src="/storage/img/bologuer.png" alt="Bologuer Logo" style="width:3.8rem; margin-right: 1rem;">
+                    <img src="/img/bologuer.png" alt="Bologuer Logo" style="width:3.8rem; margin-right: 1rem;">
                     {{ config('app.name', 'Bologuer') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
