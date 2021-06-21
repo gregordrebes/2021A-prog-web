@@ -12,7 +12,7 @@
               <th scope="col" style="text-align: center;">Description</th>
               <th scope="col" style="text-align: center;">Icon</th>
               <th scope="col" style="text-align: center;">Color</th>
-              <th scope="col" style="width: 15rem;text-align: center;">Options</th>
+              <th scope="col" style="text-align: center;">Options</th>
             </tr>
           </thead>
           <tbody>
@@ -29,14 +29,10 @@
                     <td style="text-align: center; vertical-align: middle;">
                       <span class="material-icons" style="font-size: 18px; color: {{ $c->color }};">circle</span>
                     </td>
-                    <td>
-                      <div class="btn-toolbar text-center" style="width:100%">
-                        <a class="col btn btn-block btn-primary" href="{{ url("/categories/edit/".$c->id) }}" role="button">Edit</a>
-                        <form class="col" action="{{ url("/categories/delete/".$c->id) }}" onsubmit="return confirm('Are you sure?');">
-                          @csrf
-                          <input type="submit" class="btn btn-block btn-danger" role="button" value="Delete"/>
-                        </form>
-                      </div>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <button type="button" class="btn btn-primary" onclick="window.location='{{ url("/categories/edit/".$c->id) }}'" title="Edit"><span class="material-icons align-middle">edit</span></button>
+                        <button type="submit" form="form-{{$c->id}}" class="btn btn-{{ $c->deleted == 't' ? "success" : "danger" }} align-middle" title="{{ $c->deleted == 't' ? "Restore" : "Delete" }}"><span class="material-icons align-middle">{{ $c->deleted == 't' ? "restore_from_trash" : "delete" }}</span></button>
+                        <form id="form-{{$c->id}}" action="{{ url("/categories/".($c->deleted == 't' ? "restore" : "delete")."/".$c->id) }}" onsubmit="return confirm('Are you sure?');"></form>
                     </td>
                 </tr>
             @empty
@@ -44,19 +40,6 @@
                     <td colspan="5" class="text-center">No registers</td>
                 </tr>
             @endforelse
-            {{-- 
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr> 
-            --}}
           </tbody>
     </table>
 </div>

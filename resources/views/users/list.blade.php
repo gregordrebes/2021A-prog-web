@@ -11,7 +11,7 @@
               <th scope="col">Email</th>
               <th scope="col">Role</th>
               @moderator
-              <th scope="col">Options</th>
+              <th scope="col" style="width: 5rem;">Options</th>
               @endmoderator
             </tr>
           </thead>
@@ -33,11 +33,11 @@
                     @moderator
                     <td>
                       @if ($u->id == Auth::user()->id)
-                      <button type="button" class="col btn btn-danger" disabled title="You can {{ ($u->active == 't') ? 'deactivate' : 'activate' }} your user in 'Edit user'">{{ ($u->active == 't') ? "Deactivate" : "Activate" }}</button>
+                      <button type="button" class="col btn btn-danger" disabled title="You can {{ ($u->active == 't') ? 'deactivate' : 'activate' }} your user in 'Edit user'"><span class="material-icons align-middle">toggle_off</span></button>
                       @else
-                      <form action="{{ url("/users/deactivate/".$u->id) }}" onsubmit="return confirm('Do you really want to {{ ($u->active == 't') ? 'deactivate' : 'activate' }} the user {{ $u->name}}?');">
+                      <form method="post" action="{{ url("/users/deactivate/".$u->id) }}" onsubmit="return confirm('Do you really want to {{ ($u->active == 't') ? 'deactivate' : 'activate' }} the user {{ $u->name}}?');">
                         @csrf
-                        <input type="submit" class="col btn btn-{{ ($u->active == 't') ? "danger" : "success" }}" role="button" value="{{ ($u->active == 't') ? "Deactivate" : "Activate" }}"/>
+                        <button type="submit" class="col btn btn-{{ ($u->active == 't') ? "danger" : "success" }}" title="{{ ($u->active == 't') ? "Deactivate" : "Activate" }}"><span class="material-icons align-middle">toggle_{{ ($u->active == 't') ? "off" : "on" }}</span></button>
                       </form>
                       @endif
                     </td>

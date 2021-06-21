@@ -25,9 +25,7 @@ use Illuminate\Support\Facades\Redirect;
 Auth::routes();
 
 Route::get("/", "HomeController@index")->name('home');
-Route::get('/home', "HomeController@index")->name('home');
 // Route::get('/home', [HomeController::class, "index"]);
-
 
 // view post
 Route::get("/posts/view/{slug}", "PostController@view")->name("posts.view");
@@ -43,11 +41,16 @@ Route::middleware('auth')->group(function () {
         Route::get("/categories/edit/{id}", "CategoryController@form")->name("categories.edit");
         Route::post("/categories/save/{id?}", "CategoryController@save")->name("categories.save");
         Route::get("/categories/delete/{id}", "CategoryController@delete")->name("categories.delete");
+        Route::get("/categories/restore/{id}", "CategoryController@restore")->name("categories.restore");
         
         // users
-        Route::post("/users/deactivate/{id}", "UserController@deactivate")->name("users.deactivate");
+        Route::post("/users/deactivate/{id?}", "UserController@deactivate")->name("users.deactivate");
+        
+        // reports
+        Route::get("/reports", "ReportController@index")->name("reports");
+        Route::get("/reports/form/{type}", "ReportController@form")->name("reports.form");
+        Route::any("/reports/generate/{type}", "ReportController@generate")->name("reports.generate");
     });
-    
     // Rotas para todos autenticados
     // users
     Route::get("/users", "UserController@index")->name("users");

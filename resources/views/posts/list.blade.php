@@ -62,7 +62,7 @@
               <th scope="col" style="text-align: center;">Category</th>
               <th scope="col" style="text-align: center;">Created at</th>
               <th scope="col" style="text-align: center;">Updated at</th>
-              <th scope="col" style="width: 15rem;text-align: center;">Options</th>
+              <th scope="col" style="text-align: center; width: 12rem;">Options</th>
             </tr>
           </thead>
           <tbody>
@@ -76,14 +76,11 @@
                     <td>{{ $p->created_at }}</td>
                     <td>{{ $p->updated_at }}</td>
                     {{-- <td>{{ substr($desc = $c->description, 0, $maxLength = 50) . (strlen($desc) > $maxLength ? "..." : "") }}</td> --}}
-                    <td>
-                      <div class="btn-toolbar text-center" style="width:100%">
-                        <a class="col btn btn-block btn-primary" href="{{ url("/posts/edit/".$p->id) }}" role="button">Edit</a>
-                        <form class="col" action="{{ url("/posts/".($p->deleted == 't' ? "restore" : "delete")."/".$p->id) }}" onsubmit="return confirm('Are you sure?');">
-                          @csrf
-                          <input type="submit" class="btn btn-block btn-{{ $p->deleted == 't' ? "success" : "danger"}}" role="button" value="{{ $p->deleted == 't' ? "Restore" : "Delete" }}"/>
-                        </form>
-                      </div>
+                    <td style="text-align: center; vertical-align: middle;">
+                      <button type="button" class="btn btn-primary" onclick="window.location='{{ url("/posts/edit/".$p->id) }}'" title="Edit"><span class="material-icons align-middle">edit</span></button>
+                      <button type="button" class="btn btn-primary" onclick="window.location='{{ url("/posts/view/".$p->slug) }}'" title="View"><span class="material-icons align-middle">visibility</span></button>
+                      <button type="submit" form="form-{{$p->id}}" class="btn btn-{{ $p->deleted == 't' ? "success" : "danger" }} align-middle" title="{{ $p->deleted == 't' ? "Restore" : "Delete" }}"><span class="material-icons align-middle">{{ $p->deleted == 't' ? "restore_from_trash" : "delete" }}</span></button>
+                      <form id="form-{{$p->id}}" action="{{ url("/posts/".($p->deleted == 't' ? "restore" : "delete")."/".$p->id) }}" onsubmit="return confirm('Are you sure?');"></form>
                     </td>
                 </tr>
             @empty

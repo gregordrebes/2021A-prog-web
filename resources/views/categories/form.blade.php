@@ -3,7 +3,7 @@
 @section('content')
 <div class="col m-auto d-flex flex-row justify-content-center" style="max-width: 720px;">
     {{-- <form class="form-horizontal col" method="post" action="{{ url("/categories/save/".($category->id ?? "")) }}" enctype="multipart/form-data"> --}}
-    <form class="form-horizontal col" method="post" action="{{ url("/categories/save/".request()->id) }}" enctype="multipart/form-data">
+    <form class="form-horizontal col" method="post" action="{{ url("/categories/save/".request()->id) }}">
         @csrf
         <fieldset>
 

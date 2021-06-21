@@ -59,35 +59,37 @@ class UserController extends Controller
     public function deactivate(Request $request)
     {
         if ($id = $request->id){
-            $deactivated = User::findOrFail($id)->active('f')->save();
+            
+            $user = User::findOrFail($id);
 
-            if ($deactivated) {
+            $current = $user->active == 't' ? 'f' : $user->active;
+            
+            if ($user->fill(['active'=> $current])->save()) {
                 // User was deactivated successfully, redirect to login
-                return redirect()->route("users")->with("message", "User deactivated!");
+                return redirect()->route("users")->with("message", "User ".($current == 't' ? "re" : "de")."activated!");
             } else {
-                return back()->with('error', 'Failed to deactivate the user!');
+                return back()->with('error', 'Failed to '.($current == 't' ? "re" : "de").'activate the user!');
             }
         } else if (Auth::user()){
             // Get the user
-            $user = Auth::user();
+            $user = User::findOrFail(Auth::id());
+
+            $current = $user->active == 't' ? 'f' : $user->active;
 
             // Log the user out
             Auth::logout();
 
-            // deactivate the user 
-            $deactivated = $user->active('f')->save();
-
-            if ($deactivated) {
+            if ($user->fill(["active"=>$current])->save()) {
                 // User was deactivated successfully, redirect to login
-                return redirect()->route("/")->with("message", "User deactivated!");
+                return redirect()->route("/")->with("message", "User ".($current == 't' ? "re" : "de")."activated!");
             } else {
                 // User was NOT deactivated successfully, so log them back into your application! Could also use: Auth::loginUsingId($user->id);
-                $user->active('t')->save();
+                $user->fill(["active"=>$user->active])->save();
                 
                 Auth::login($user);
 
                 // Redirect them back with some data letting them know it failed (or handle however you need depending on your setup)
-                return back()->with('error', 'Failed to deactivate your user!');
+                return back()->with('error', "Failed to ".($current == 't' ? "re" : "de")."activate your user!");
             }
         } else {
             return back()->with('error', 'No user selected!');

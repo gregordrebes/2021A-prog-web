@@ -77,6 +77,20 @@ class CategoryController extends Controller
         return redirect()->route("categories")->with('message', 'Category deleted successfully!');
     }
 
+    /**
+     * Delete register
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id = null)
+    {
+        $category = Category::find($id);
+        $category->deleted = 'f';
+        $category->save();
+        return redirect()->route("categories")->with('message', 'Category deleted successfully!');
+    }
+
     // /**
     //  * Show the form for creating a new resource.
     //  *

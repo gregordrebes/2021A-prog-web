@@ -10,7 +10,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -22,7 +23,6 @@
     <link rel="stylesheet" href="{{ asset('css/material-icons-min.css') }}" />
 
     @stack('styles')
-    @stack('scripts')
 
 </head>
 <body>
@@ -77,6 +77,11 @@
                                         Edit user
                                     </a>
                                     
+                                    @moderator
+                                    <a class="dropdown-item" href="{{ route('reports') }}">
+                                        Reports & Graphs
+                                    </a>
+                                    @endmoderator
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -113,5 +118,6 @@
             @yield('content')
         </main>
     </div>
+    @stack('scripts')
 </body>
 </html>
