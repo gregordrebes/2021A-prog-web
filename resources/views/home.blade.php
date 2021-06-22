@@ -66,11 +66,21 @@
         @forelse($posts as $p)
                 <div class="col d-flex flex-row justify-content-center mb-3">
                     <div class="card posts" style="width: 18rem;">
-                        <img class="card-img-top" src="{{ $p->thumbnail }}" alt="Thumbnail">
+                        <img class="card-img-top" style="height: 8rem; object-fit: cover;" src="{{ $p->thumbnail }}" alt="Thumbnail">
                         <div class="card-body">
                             <h5 class="card-title">{{ $p->title }}</h5>
+                            <p class="text-muted">
+                              Posted at {{ date("d/m/Y", strtotime($p->created_at)) }}
+                              <br>
+                              Updated at {{ date("d/m/Y", strtotime($p->updated_at)) }}
+                            </p>
                             <p class="card-text">{{ $p->subtitle }}</p>
-                            <a href="/posts/view/{{$p->slug}}" class="btn btn-primary btn-red">See post</a>
+                            <a href="/posts/view/{{$p->slug}}" style="float: left;" class="btn btn-primary btn-red">See post</a>
+                            <p class="text-muted" style="float: right;">
+                              {{ App\Reactions::where("post_id", $p->id)->where("type", "l")->count() }} like(s)
+                              &nbsp;
+                              {{ App\Reactions::where("post_id", $p->id)->where("type", "d")->count() }} dislike(s)
+                            </p>
                         </div>
                     </div>
                     

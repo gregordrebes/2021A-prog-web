@@ -9,10 +9,10 @@
             <div class="form-group">
                 <label class="col control-label" for="date1">Posts created/updated at</label>
                 <div class="col">
-                    <input id="date1" name="date1" type="date" class="form-control input-md" value="{{ date('Y-m-d') }}">
+                    <input id="date1" required name="date1" type="date" class="form-control input-md" value="{{ date('Y-m-d') }}">
                 </div>
                 <div class="col">
-                    <input id="date2" name="date2" type="date" class="form-control input-md" value="{{ date('Y-m-d') }}">
+                    <input id="date2" required name="date2" type="date" class="form-control input-md" value="{{ date('Y-m-d') }}">
                 </div> 
             </div>
         </fieldset>
@@ -54,7 +54,8 @@
                         datasets: [{
                             label: 'Nº of Posts',
                             data: Posts,
-                            borderWidth: 1
+                            borderWidth: 1,
+                            backgroundColor: "#3490dc"
                         }]
                     },
                     options: {

@@ -64,4 +64,6 @@ Route::middleware('auth')->group(function () {
     Route::post("/posts/save/{id?}", "PostController@save")->name("posts.save");
     Route::get("/posts/delete/{id}", "PostController@delete")->name("posts.delete");
     Route::get("/posts/restore/{id}", "PostController@restore")->name("posts.restore");
+    Route::get("/posts/like/{id}", "PostController@like")->name("posts.like");
+    Route::get("/posts/dislike/{id}", "PostController@dislike")->name("posts.dislike");
 });

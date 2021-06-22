@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\RoleHelper;
 use App\Post;
-
+use App\Reactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -122,5 +122,36 @@ class PostController extends Controller
     {
         $post = Post::where("slug", "=", $slug)->first();
         return view("posts.view", compact("post"));
+    }
+
+    public function like($id)
+    {
+        # code...
+        if ($post = Post::find($id)) {
+            $reaction = new Reactions();
+            $reaction->user_id = Auth::user()->id;
+            $reaction->post_id = $id;
+            $reaction->type = "l";
+
+            $reaction->save();
+            return redirect()->route("posts.view", $post->slug)->with("message", "You liked this post! :)");
+        }
+        return back()->with("error", "Post not find!");
+
+    }
+
+    public function dislike($id)
+    {
+        # code...
+        if ($post = Post::find($id)) {
+            $reaction = new Reactions();
+            $reaction->user_id = Auth::user()->id;
+            $reaction->post_id = $id;
+            $reaction->type = "d";
+
+            $reaction->save();
+            return redirect()->route("posts.view", $post->slug)->with("message", "You disliked this post! :(");
+        }
+        return back()->with("error", "Post not find!");
     }
 }

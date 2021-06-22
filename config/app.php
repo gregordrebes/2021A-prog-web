@@ -177,7 +177,6 @@ return [
 
         Barryvdh\DomPDF\ServiceProvider::class,
 
-        Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
 
     ],
 
